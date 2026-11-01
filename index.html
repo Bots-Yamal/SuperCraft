@@ -1,1241 +1,675 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101510">
-<title>SERVERCRAFT — Descubre tu próximo mundo</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07140f">
+<title>ServerCraft — Descubre tu próximo mundo</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-:root {
-  --bg:#101510;
-  --panel:#19221b;
-  --panel2:#202c22;
-  --green:#75d64b;
-  --green2:#a2ed73;
-  --text:#f2f5ef;
-  --muted:#9aa89a;
-  --border:#344638;
-  --danger:#ff6868;
+:root{
+ --bg:#07140f;--panel:#10251b;--panel2:#163324;
+ --green:#54e68a;--green2:#a0ffc0;--text:#edfff2;
+ --muted:#9bb7a4;--border:#28513a;--gold:#f4d47a;
+ --red:#ff7777;
 }
-
-* {box-sizing:border-box;margin:0;padding:0}
-
-body {
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,Arial,sans-serif;
-  min-height:100vh;
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;color:var(--text);font-family:Inter,sans-serif;
+ background:radial-gradient(ellipse at 15% 5%,#16482d66,transparent 38%),
+ radial-gradient(ellipse at 90% 35%,#174b3660,transparent 38%),
+ linear-gradient(150deg,#06110c,#0b1d13 55%,#07140f);
 }
-
-button,input,select,textarea {font:inherit}
-button {cursor:pointer}
-a {color:inherit;text-decoration:none}
-
-.pixel {
-  font-family:"Press Start 2P",monospace;
-  line-height:1.8;
-  letter-spacing:-1px;
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.hidden{display:none!important}
+#particles{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.particle{position:absolute;bottom:-20px;width:5px;height:5px;border-radius:50%;background:#70ff9b;box-shadow:0 0 12px #70ff9b;animation:floatUp linear infinite;opacity:.3}
+@keyframes floatUp{to{transform:translateY(-110vh) translateX(70px);opacity:0}}
+@keyframes glow{50%{box-shadow:0 0 30px #38e87888}}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes portal{to{transform:rotate(360deg)}}
+header{
+ position:sticky;top:0;z-index:20;background:#07140feF;
+ backdrop-filter:blur(18px);border-bottom:1px solid var(--border)
 }
-
-header {
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:rgba(16,21,16,.94);
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid var(--border);
+.topbar{max-width:1300px;margin:auto;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-family:"Press Start 2P";font-size:13px;color:var(--green);line-height:1.8}
+.logo small{display:block;font:600 9px Inter;color:var(--muted);letter-spacing:1px}
+.user-mini{font-size:12px;color:var(--muted)}
+.layout{max-width:1300px;margin:auto;display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 65px)}
+.sidebar{padding:22px 15px;border-right:1px solid #28513a88}
+.navbtn{
+ width:100%;padding:13px;text-align:left;margin:4px 0;border:1px solid transparent;
+ background:transparent;color:var(--muted);border-radius:12px;font-weight:700
 }
-
-.nav {
-  max-width:1250px;
-  margin:auto;
-  padding:16px 22px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
+.navbtn:hover,.navbtn.active{background:#163324;border-color:var(--border);color:var(--green)}
+.navbtn span{display:inline-block;width:27px}
+.content{padding:25px;min-width:0;animation:appear .3s}
+.screen{display:none}
+.screen.active{display:block;animation:appear .35s}
+.btn{
+ border:1px solid var(--border);background:var(--panel2);color:var(--text);
+ padding:11px 15px;border-radius:12px;font-weight:700;transition:.2s
 }
-
-.logo {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  font-size:12px;
-  color:var(--green);
+.btn:hover{transform:translateY(-2px);border-color:var(--green)}
+.btn.primary{background:linear-gradient(135deg,#28a85a,#65ed93);color:#062111;border:0}
+.btn.danger{border-color:#813e3e;color:#ffaaaa}
+.btn.small{padding:8px 11px;font-size:12px}
+input,select,textarea{
+ width:100%;background:#091a11;color:var(--text);border:1px solid var(--border);
+ padding:12px 14px;border-radius:11px;outline:none;margin:5px 0
 }
-
-.logo-icon {
-  width:38px;
-  height:38px;
-  background:var(--green);
-  color:#142010;
-  display:grid;
-  place-items:center;
-  font-size:19px;
-  border-radius:7px;
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px #4be98218}
+h1{font-size:clamp(30px,5vw,55px);line-height:1.1}
+h1 span,.green{color:var(--green)}
+h2{margin-top:0}
+.muted{color:var(--muted)}
+.eyebrow{color:var(--green);font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase}
+.hero{
+ min-height:340px;padding:35px;border:1px solid var(--border);border-radius:22px;
+ display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:20px;
+ background:linear-gradient(120deg,#153c28dd,#0a1b13ee)
 }
-
-.nav-links {
-  display:flex;
-  align-items:center;
-  gap:22px;
+.hero p{color:var(--muted);line-height:1.8;max-width:580px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.portal{width:min(230px,70%);aspect-ratio:1;border:3px solid #66f99b88;border-radius:50%;margin:auto;display:grid;place-items:center;background:radial-gradient(circle,#4aff9b33 0 25%,#1d9b5b33 40%,transparent 67%);animation:glow 4s infinite}
+.portal:before{content:"";position:absolute;width:150px;height:150px;border:2px solid #9dffc4aa;border-radius:45%;animation:portal 18s linear infinite}
+.portal span{font-size:65px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat,.card,.panel,.feature{
+ background:linear-gradient(145deg,#153322e8,#0c2016f2);
+ border:1px solid var(--border);border-radius:16px
 }
-
-.nav-links a {
-  color:var(--muted);
-  font-size:13px;
-  font-weight:700;
-  transition:.2s;
+.stat{padding:17px}
+.stat strong{display:block;font-size:25px;color:var(--green)}
+.stat span{font-size:11px;color:var(--muted)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.toolbar input{flex:1;min-width:150px}
+.editions{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.edition-btn{border:1px solid var(--border);background:#10251b;color:var(--muted);padding:11px 17px;border-radius:12px;font-weight:800}
+.edition-btn.active{background:#225d39;color:#a0ffc0;border-color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{overflow:hidden;transition:.2s;animation:appear .3s}
+.card:hover{transform:translateY(-4px);border-color:var(--green)}
+.banner{height:95px;display:grid;place-items:center;font-size:38px;background:radial-gradient(circle at 20% 40%,#5cff9b66,transparent 25%),linear-gradient(125deg,#174a30,#10281e 60%,#246340)}
+.card-body{padding:14px}
+.card-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.card h3{font-size:15px;margin:0}
+.tag{font-size:10px;padding:5px 8px;border-radius:20px;background:#244a34;color:var(--green2)}
+.card p{font-size:12px;color:var(--muted);line-height:1.6;min-height:35px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0;color:var(--muted);font-size:11px}
+.card-actions{display:flex;gap:7px;flex-wrap:wrap}
+.card-actions .btn{flex:1}
+.status{font-size:11px;font-weight:800}
+.online{color:#67ed9b}.offline{color:var(--red)}.unknown{color:var(--gold)}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.feature{padding:17px}
+.feature b{display:block;margin:8px 0}
+.feature p{font-size:12px;line-height:1.6;color:var(--muted)}
+.rank-row,.list-row{display:flex;align-items:center;gap:12px;padding:13px;border-bottom:1px solid var(--border)}
+.rank-row strong,.list-row strong{flex:1}
+.rank-row small,.list-row small{display:block;color:var(--muted);margin-top:4px}
+.rank-num{font-family:"Press Start 2P";font-size:11px;color:var(--gold)}
+.panel{padding:18px;margin:12px 0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid .full{grid-column:1/-1}
+.empty{padding:30px;text-align:center;color:var(--muted);grid-column:1/-1}
+.notice{font-size:12px;line-height:1.6;color:var(--gold)}
+.badge{font-size:10px;color:var(--green2);background:#244a34;padding:5px 8px;border-radius:20px}
+.modal{position:fixed;inset:0;z-index:60;background:#000d;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.modal-box{width:min(440px,100%);max-height:90vh;overflow:auto;padding:23px;background:#10251b;border:1px solid var(--border);border-radius:18px;animation:appear .2s}
+.modal-box input,.modal-box textarea,.modal-box select{margin:6px 0}
+.modal-actions{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px}
+.auth-card{width:min(430px,100%);padding:27px;background:#10251bf5;border:1px solid var(--border);border-radius:22px;box-shadow:0 20px 80px #0008}
+.auth-card .logo{margin-bottom:25px}
+.auth-tabs{display:flex;gap:8px;margin:15px 0}
+.auth-tabs button{flex:1}
+.message{font-size:12px;min-height:20px;color:var(--gold);margin:8px 0}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:11px;border-top:1px solid var(--border)}
+.mobile-nav{display:none}
+@media(max-width:900px){
+ .layout{grid-template-columns:1fr}
+ .sidebar{display:none}
+ .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:30;background:#07140ff5;border-top:1px solid var(--border);justify-content:space-around;padding:7px 2px;gap:2px}
+ .mobile-nav .navbtn{font-size:10px;text-align:center;padding:8px 2px;margin:0}
+ .mobile-nav .navbtn span{display:block;width:auto;font-size:17px}
+ .content{padding:17px;padding-bottom:90px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
-.nav-links a:hover {color:var(--green)}
-
-.btn {
-  padding:11px 17px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:var(--panel2);
-  color:var(--text);
-  font-weight:700;
-  transition:.2s;
+@media(max-width:600px){
+ .hero{grid-template-columns:1fr;text-align:center;padding:25px 17px}
+ .hero-actions{justify-content:center}
+ .portal{width:150px}
+ .portal:before{width:100px;height:100px}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .grid,.feature-grid{grid-template-columns:1fr}
+ .form-grid{grid-template-columns:1fr}
+ .form-grid .full{grid-column:auto}
+ .topbar{padding:10px 14px}
+ .logo{font-size:11px}
 }
-
-.btn:hover {transform:translateY(-2px);border-color:var(--green)}
-
-.btn-primary {
-  background:var(--green);
-  border-color:var(--green);
-  color:#142010;
-}
-
-.btn-primary:hover {background:var(--green2)}
-
-.btn-small {padding:9px 13px;font-size:12px}
-
-.container {
-  max-width:1150px;
-  padding:0 22px;
-  margin:auto;
-}
-
-.hero {
-  padding:85px 20px 70px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-  background:
-  radial-gradient(ellipse at 50% 30%,rgba(88,171,58,.15),transparent 65%);
-}
-
-.hero-tag {
-  display:inline-block;
-  border:1px solid var(--border);
-  padding:9px 13px;
-  border-radius:30px;
-  color:var(--green);
-  font-size:10px;
-  font-weight:800;
-  margin-bottom:25px;
-}
-
-.hero h1 {
-  font-size:clamp(23px,5vw,43px);
-  color:var(--green);
-  margin-bottom:18px;
-  text-shadow:0 4px 25px #75d64b30;
-}
-
-.hero h2 {
-  font-size:clamp(10px,2vw,14px);
-  line-height:2.2;
-  margin-bottom:14px;
-}
-
-.hero p {
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.8;
-  max-width:550px;
-  margin:0 auto 28px;
-}
-
-.platforms {
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:28px;
-}
-
-.platform {
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:7px;
-  padding:9px 14px;
-  color:var(--green2);
-  font-size:11px;
-  font-weight:800;
-}
-
-.hero-actions {
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.section {padding:45px 0}
-
-.section-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:22px;
-}
-
-.section-heading h2 {
-  font-size:17px;
-}
-
-.section-heading p {
-  color:var(--muted);
-  font-size:12px;
-  margin-top:7px;
-}
-
-.search-box {
-  display:flex;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.search-box input {
-  flex:1;
-  min-width:0;
-}
-
-input,select,textarea {
-  width:100%;
-  background:#111a13;
-  border:1px solid var(--border);
-  color:white;
-  padding:13px 14px;
-  border-radius:8px;
-  outline:none;
-  font-size:13px;
-}
-
-input:focus,select:focus,textarea:focus {
-  border-color:var(--green);
-}
-
-input::placeholder,textarea::placeholder {color:#718073}
-
-.filters {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:23px;
-}
-
-.filter {
-  background:var(--panel);
-  color:var(--muted);
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:9px 13px;
-  font-size:11px;
-  font-weight:700;
-}
-
-.filter.active,.filter:hover {
-  background:#263b27;
-  color:var(--green);
-  border-color:var(--green);
-}
-
-.server-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:17px;
-}
-
-.server-card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  transition:.2s;
-}
-
-.server-card:hover {
-  transform:translateY(-4px);
-  border-color:#6aab53;
-}
-
-.server-banner {
-  height:110px;
-  background:
-  linear-gradient(135deg,#243d29,#16251a);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:38px;
-  position:relative;
-}
-
-.server-banner::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(transparent,rgba(0,0,0,.2));
-}
-
-.server-body {padding:16px}
-
-.server-title-row {
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  align-items:center;
-  margin-bottom:10px;
-}
-
-.server-title {font-size:15px;font-weight:800}
-
-.heart {
-  border:0;
-  background:none;
-  color:#8c9b8e;
-  font-size:22px;
-}
-
-.heart.saved {color:#ff7272}
-
-.server-description {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  min-height:40px;
-}
-
-.server-tags {
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin:14px 0;
-}
-
-.tag {
-  background:#25352a;
-  color:#a7e88b;
-  border-radius:5px;
-  padding:5px 8px;
-  font-size:10px;
-  font-weight:700;
-}
-
-.server-info {
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:14px;
-}
-
-.online {color:var(--green)}
-
-.server-actions {
-  display:flex;
-  gap:8px;
-}
-
-.server-actions button {flex:1}
-
-.empty {
-  padding:35px;
-  text-align:center;
-  color:var(--muted);
-  border:1px dashed var(--border);
-  border-radius:10px;
-  grid-column:1/-1;
-  font-size:13px;
-}
-
-.category-grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-}
-
-.category {
-  padding:25px 12px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:11px;
-  text-align:center;
-  transition:.2s;
-  cursor:pointer;
-}
-
-.category:hover {
-  border-color:var(--green);
-  transform:translateY(-4px);
-}
-
-.category-icon {font-size:31px;margin-bottom:12px}
-.category h3 {font-size:12px}
-.category p {font-size:10px;color:var(--muted);margin-top:8px}
-
-.feature-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.feature {
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:21px;
-  border-radius:10px;
-}
-
-.feature-icon {font-size:24px;margin-bottom:12px}
-.feature h3 {font-size:13px;margin-bottom:8px}
-.feature p {font-size:12px;color:var(--muted);line-height:1.7}
-
-.ranking-list {display:grid;gap:10px}
-
-.rank-item {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:14px;
-}
-
-.rank-number {
-  color:var(--green);
-  font-size:17px;
-  font-weight:900;
-  width:28px;
-}
-
-.rank-item strong {font-size:13px}
-.rank-item small {display:block;color:var(--muted);margin-top:5px}
-
-footer {
-  margin-top:55px;
-  padding:35px 20px;
-  border-top:1px solid var(--border);
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  line-height:2;
-}
-
-footer strong {color:var(--green)}
-
-.modal {
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#000b;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-}
-
-.modal.show {display:flex}
-
-.modal-box {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:25px;
-  width:100%;
-  max-width:430px;
-  max-height:90vh;
-  overflow-y:auto;
-  position:relative;
-}
-
-.modal-close {
-  position:absolute;
-  right:16px;
-  top:13px;
-  background:none;
-  color:var(--muted);
-  border:0;
-  font-size:23px;
-}
-
-.modal-title {
-  font-size:16px;
-  color:var(--green);
-  margin-bottom:8px;
-}
-
-.modal-subtitle {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-  margin-bottom:20px;
-}
-
-.form-group {margin-bottom:14px}
-.form-group label {
-  display:block;
-  font-size:11px;
-  margin-bottom:7px;
-  color:#c5d1c6;
-  font-weight:700;
-}
-
-.form-message {
-  font-size:12px;
-  margin:12px 0;
-  line-height:1.6;
-}
-
-.form-message.error {color:var(--danger)}
-.form-message.success {color:var(--green)}
-
-.switch-auth {
-  color:var(--green);
-  background:none;
-  border:0;
-  font-size:12px;
-  margin-top:17px;
-  width:100%;
-}
-
-.notice {
-  background:#253529;
-  border:1px solid #405b43;
-  color:#b7d9b1;
-  padding:12px;
-  border-radius:7px;
-  font-size:11px;
-  line-height:1.7;
-  margin-bottom:15px;
-}
-
-.mobile-menu {display:none}
-
-@media(max-width:800px) {
-  .nav-links {display:none}
-  .server-grid {grid-template-columns:repeat(2,1fr)}
-  .category-grid {grid-template-columns:repeat(2,1fr)}
-  .feature-grid {grid-template-columns:repeat(2,1fr)}
-}
-
-@media(max-width:520px) {
-  .nav {padding:12px 15px}
-  .logo {font-size:9px}
-  .logo-icon {width:32px;height:32px}
-  .nav .btn {padding:9px 10px;font-size:11px}
-  .container {padding:0 15px}
-  .hero {padding:65px 15px 50px}
-  .server-grid {grid-template-columns:1fr}
-  .feature-grid {grid-template-columns:1fr}
-  .section {padding:32px 0}
-  .search-box {flex-direction:column}
-  .section-heading h2 {font-size:15px}
-  .pixel {font-size:inherit}
-}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
-
 <body>
+<div id="particles"></div>
 
-<header>
-  <nav class="nav">
-    <a href="#" class="logo">
-      <span class="logo-icon">⛏</span>
-      <span class="pixel">SERVERCRAFT</span>
-    </a>
-
-    <div class="nav-links">
-      <a href="#inicio">Inicio</a>
-      <a href="#servidores">Servidores</a>
-      <a href="#modalidades">Modalidades</a>
-      <a href="#ranking">Ranking</a>
-    </div>
-
-    <div id="accountArea">
-      <button class="btn btn-primary btn-small" onclick="openAuth('register')">Crear cuenta</button>
-    </div>
-  </nav>
-</header>
-
-<main>
-
-<section class="hero" id="inicio">
-  <div class="hero-tag">🌍 TU PRÓXIMA AVENTURA COMIENZA AQUÍ</div>
-
-  <h1 class="pixel">SERVERCRAFT</h1>
-
-  <h2 class="pixel">DESCUBRE TU PRÓXIMO MUNDO</h2>
-
-  <p>
-    Encuentra servidores increíbles, conoce nuevas comunidades
-    y descubre tu próxima aventura en Minecraft.
-  </p>
-
-  <div class="platforms">
-    <span class="platform">JAVA</span>
-    <span class="platform">BEDROCK</span>
-    <span class="platform">CROSSPLAY</span>
+<!-- REGISTRO E INICIO DE SESIÓN -->
+<div id="authScreen" class="auth-screen">
+ <div class="auth-card">
+  <div class="logo">SERVERCRAFT<small>DESCUBRE TU PRÓXIMO MUNDO</small></div>
+  <div class="eyebrow">✦ Tu aventura comienza aquí ✦</div>
+  <h2 id="authTitle">Crear cuenta</h2>
+  <p class="muted" id="authDescription">Registrate para entrar a ServerCraft.</p>
+  <div class="auth-tabs">
+   <button class="btn primary" id="registerTab" onclick="setAuthMode('register')">Registrarme</button>
+   <button class="btn" id="loginTab" onclick="setAuthMode('login')">Iniciar sesión</button>
   </div>
-
-  <div class="hero-actions">
-    <a href="#servidores" class="btn btn-primary">Explorar servidores</a>
-    <button class="btn" onclick="openAuth('register')">Publicar servidor</button>
-  </div>
-</section>
-
-<div class="container">
-
-<section class="section" id="servidores">
-  <div class="section-heading">
-    <div>
-      <h2>🌐 Explorar servidores</h2>
-      <p>Encuentra tu próxima comunidad de Minecraft.</p>
-    </div>
-  </div>
-
-  <div class="search-box">
-    <input id="searchInput" placeholder="Buscar servidores por nombre..." oninput="renderServers()">
-    <button class="btn btn-primary" onclick="renderServers()">Buscar</button>
-  </div>
-
-  <div class="filters">
-    <button class="filter active" data-filter="Todos" onclick="setFilter('Todos',this)">Todos</button>
-    <button class="filter" data-filter="Java" onclick="setFilter('Java',this)">Java</button>
-    <button class="filter" data-filter="Bedrock" onclick="setFilter('Bedrock',this)">Bedrock</button>
-    <button class="filter" data-filter="Crossplay" onclick="setFilter('Crossplay',this)">Crossplay</button>
-  </div>
-
-  <div class="server-grid" id="serverGrid"></div>
-</section>
-
-<section class="section" id="modalidades">
-  <div class="section-heading">
-    <div>
-      <h2>🧭 Descubre tu modalidad</h2>
-      <p>¿Qué tipo de aventura estás buscando?</p>
-    </div>
-  </div>
-
-  <div class="category-grid">
-    <div class="category" onclick="categoryFilter('Survival')">
-      <div class="category-icon">🌲</div>
-      <h3>Survival</h3>
-      <p>Sobrevive y construye.</p>
-    </div>
-
-    <div class="category" onclick="categoryFilter('SkyBlock')">
-      <div class="category-icon">☁️</div>
-      <h3>SkyBlock</h3>
-      <p>Comienza desde una isla.</p>
-    </div>
-
-    <div class="category" onclick="categoryFilter('BedWars')">
-      <div class="category-icon">🛏️</div>
-      <h3>BedWars</h3>
-      <p>Compite con otros equipos.</p>
-    </div>
-
-    <div class="category" onclick="categoryFilter('Lifesteal')">
-      <div class="category-icon">❤️</div>
-      <h3>Lifesteal</h3>
-      <p>Una aventura PvP.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="favoritos">
-  <div class="section-heading">
-    <div>
-      <h2>❤️ Mis favoritos</h2>
-      <p>Los servidores que has guardado.</p>
-    </div>
-  </div>
-  <div class="server-grid" id="favoriteGrid">
-    <div class="empty">Todavía no tienes favoritos.</div>
-  </div>
-</section>
-
-<section class="section" id="ranking">
-  <div class="section-heading">
-    <div>
-      <h2>🏆 Ranking de servidores</h2>
-      <p>Los servidores mejor valorados.</p>
-    </div>
-  </div>
-  <div class="ranking-list" id="rankingList">
-    <div class="empty">Todavía no hay valoraciones.</div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-heading">
-    <div>
-      <h2>✨ ¿Qué encontrarás aquí?</h2>
-      <p>Todo lo necesario para descubrir nuevos mundos.</p>
-    </div>
-  </div>
-
-  <div class="feature-grid">
-    <div class="feature">
-      <div class="feature-icon">🔎</div>
-      <h3>Buscador</h3>
-      <p>Encuentra servidores por nombre y modalidad.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">⚔️</div>
-      <h3>Java y Bedrock</h3>
-      <p>Descubre servidores para distintas plataformas.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">⭐</div>
-      <h3>Valoraciones</h3>
-      <p>Consulta las opiniones de otros jugadores.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">📖</div>
-      <h3>Guías</h3>
-      <p>Aprende a entrar a servidores Java y Bedrock.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">📡</div>
-      <h3>Estado en tiempo real</h3>
-      <p>Consulta la disponibilidad y los jugadores conectados cuando esté conectado el sistema de verificación.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">🌟</div>
-      <h3>Destacados</h3>
-      <p>Descubre comunidades interesantes.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="publicar">
-  <div class="feature" style="text-align:center;padding:35px">
-    <div class="feature-icon">🚀</div>
-    <h2 style="font-size:19px;margin-bottom:12px">¿Tienes un servidor?</h2>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">
-      Comparte tu comunidad con otros jugadores de Minecraft.
-    </p>
-    <button class="btn btn-primary" onclick="openPublish()">Publicar mi servidor</button>
-  </div>
-</section>
-
-</div>
-</main>
-
-<footer>
-  <strong class="pixel">SERVERCRAFT</strong>
-  <p>DESCUBRE TU PRÓXIMO MUNDO</p>
-  <p>JAVA · BEDROCK · CROSSPLAY</p>
-  <p style="margin-top:15px">© 2026 SERVERCRAFT. Todos los derechos reservados.</p>
-</footer>
-
-<!-- MODAL DE CUENTAS -->
-<div class="modal" id="authModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('authModal')">×</button>
-
-    <h2 class="modal-title pixel" id="authTitle">CREAR CUENTA</h2>
-    <p class="modal-subtitle" id="authSubtitle">Únete a la comunidad SERVERCRAFT.</p>
-
-    <div class="notice">
-      Esta versión es una demostración visual. El registro e inicio de sesión reales necesitan una base de datos y un servidor seguro.
-    </div>
-
-    <form id="authForm">
-      <div class="form-group">
-        <label>Nombre de usuario</label>
-        <input id="authUsername" required minlength="3" maxlength="20" placeholder="Tu nombre de usuario">
-      </div>
-
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input id="authPassword" type="password" required minlength="8" placeholder="Tu contraseña">
-      </div>
-
-      <div class="form-group" id="confirmGroup">
-        <label>Confirmar contraseña</label>
-        <input id="authConfirm" type="password" minlength="8" placeholder="Repite tu contraseña">
-      </div>
-
-      <div class="form-message" id="authMessage"></div>
-
-      <button class="btn btn-primary" style="width:100%" id="authSubmit">Crear cuenta</button>
-    </form>
-
-    <button class="switch-auth" id="authSwitch" onclick="switchAuth()">
-      ¿Ya tienes cuenta? Iniciar sesión
-    </button>
-  </div>
+  <form id="authForm">
+   <input id="authUsername" placeholder="Nombre de usuario" minlength="3" maxlength="24" autocomplete="username" required>
+   <input id="authPassword" type="password" placeholder="Contraseña (mínimo 10 caracteres)" minlength="10" maxlength="128" autocomplete="new-password" required>
+   <button class="btn primary" id="authSubmit" style="width:100%;margin-top:10px">Crear cuenta</button>
+  </form>
+  <div id="authMessage" class="message" role="status"></div>
+  <p class="notice">Tu contraseña se procesa en el servidor y no se guarda en texto normal. No compartas tus credenciales.</p>
+ </div>
 </div>
 
-<!-- MODAL PUBLICAR SERVIDOR -->
-<div class="modal" id="publishModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('publishModal')">×</button>
-
-    <h2 class="modal-title pixel">PUBLICAR SERVIDOR</h2>
-    <p class="modal-subtitle">Comparte tu mundo con la comunidad.</p>
-
-    <form id="publishForm">
-      <div class="form-group">
-        <label>Nombre del servidor</label>
-        <input id="serverName" required maxlength="35" placeholder="Ej. MiServidor">
-      </div>
-
-      <div class="form-group">
-        <label>Dirección IP</label>
-        <input id="serverIP" required placeholder="play.ejemplo.com">
-      </div>
-
-      <div class="form-group">
-        <label>Puerto (opcional)</label>
-        <input id="serverPort" type="number" placeholder="25565">
-      </div>
-
-      <div class="form-group">
-        <label>Plataforma</label>
-        <select id="serverPlatform">
-          <option>Java</option>
-          <option>Bedrock</option>
-          <option>Crossplay</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Modalidad</label>
-        <select id="serverMode">
-          <option>Survival</option>
-          <option>SkyBlock</option>
-          <option>BedWars</option>
-          <option>Lifesteal</option>
-          <option>Otro</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Descripción</label>
-        <textarea id="serverDescription" rows="3" maxlength="180" placeholder="Describe tu servidor..."></textarea>
-      </div>
-
-      <div class="form-message" id="publishMessage"></div>
-      <button class="btn btn-primary" style="width:100%">Enviar servidor</button>
-    </form>
+<!-- APLICACIÓN -->
+<div id="app" class="hidden">
+ <header>
+  <div class="topbar">
+   <div class="logo">SERVERCRAFT<small>DESCUBRE TU PRÓXIMO MUNDO</small></div>
+   <div class="user-mini">Conectado como <strong id="topUsername" class="green"></strong></div>
+   <button class="btn small" onclick="logout()">Salir</button>
   </div>
+ </header>
+
+ <div class="layout">
+  <aside class="sidebar" id="sideNav"></aside>
+  <main class="content">
+
+   <section class="screen active" id="screen-home">
+    <div class="hero">
+     <div>
+      <div class="eyebrow">✦ Tu aventura comienza aquí ✦</div>
+      <h1>DESCUBRE TU <span>PRÓXIMO MUNDO</span></h1>
+      <p>Explorá servidores de Minecraft, encontrá nuevas comunidades y viví aventuras increíbles. Java, Bedrock y Crossplay en un solo lugar.</p>
+      <div class="hero-actions">
+       <button class="btn primary" onclick="go('explore')">Explorar servidores</button>
+       <button class="btn" onclick="go('publish')">＋ Publicar servidor</button>
+      </div>
+     </div>
+     <div class="portal"><span>🟩</span></div>
+    </div>
+    <div class="stats">
+     <div class="stat"><strong id="totalCount">0</strong><span>Servidores</span></div>
+     <div class="stat"><strong id="onlineCount">—</strong><span>Online comprobados</span></div>
+     <div class="stat"><strong id="favoriteCount">0</strong><span>Favoritos</span></div>
+     <div class="stat"><strong id="reviewCount">0</strong><span>Valoraciones</span></div>
+    </div>
+    <div class="panel">
+     <h2>🌌 Bienvenido a ServerCraft</h2>
+     <p class="muted">Tu punto de encuentro para descubrir comunidades de Minecraft.</p>
+     <button class="btn primary" onclick="go('explore')">Comenzar a explorar →</button>
+    </div>
+    <h2>✨ Herramientas de la comunidad</h2>
+    <div class="feature-grid">
+     <div class="feature">🧭<b>Exploración</b><p>Filtrá por edición y modalidad.</p></div>
+     <div class="feature">💚<b>Favoritos</b><p>Guardá tus comunidades favoritas.</p></div>
+     <div class="feature">🏆<b>Ranking</b><p>Descubrí servidores valorados.</p></div>
+     <div class="feature">📣<b>Publicaciones</b><p>Compartí tu servidor con la comunidad.</p></div>
+     <div class="feature">🛡️<b>Reportes</b><p>Ayudá a mantener el catálogo.</p></div>
+     <div class="feature">🎖️<b>Logros</b><p>Participá y ganá experiencia.</p></div>
+    </div>
+   </section>
+
+   <section class="screen" id="screen-explore">
+    <div class="eyebrow">DIRECTORIO</div>
+    <h2>🧭 Explorar servidores</h2>
+    <p class="muted">Elegí tu edición y encontrá tu próximo mundo.</p>
+    <div class="editions">
+     <button class="edition-btn active" data-edition="all" onclick="setEdition('all')">🌐 Todos</button>
+     <button class="edition-btn" data-edition="Java" onclick="setEdition('Java')">☕ Java</button>
+     <button class="edition-btn" data-edition="Bedrock" onclick="setEdition('Bedrock')">🟩 Bedrock</button>
+     <button class="edition-btn" data-edition="Crossplay" onclick="setEdition('Crossplay')">🔀 Ambos</button>
+    </div>
+    <div class="toolbar">
+     <input id="search" placeholder="Buscar servidor o IP..." oninput="renderServers()">
+     <select id="mode" onchange="renderServers()">
+      <option value="all">Todas las modalidades</option>
+      <option>Survival</option><option>Skyblock</option><option>PvP</option>
+      <option>Network</option><option>SMP</option>
+     </select>
+     <select id="sort" onchange="renderServers()">
+      <option value="new">Más recientes</option>
+      <option value="rating">Mejor valorados</option>
+      <option value="favorites">Más favoritos</option>
+      <option value="name">Nombre A-Z</option>
+     </select>
+     <button class="btn small" onclick="refreshStatuses()">↻ Estado</button>
+    </div>
+    <div class="grid" id="serverGrid"></div>
+   </section>
+
+   <section class="screen" id="screen-ranking">
+    <div class="eyebrow">COMUNIDAD</div><h2>🏆 Ranking</h2>
+    <p class="muted">Ordenado por valoraciones de los usuarios.</p>
+    <div class="panel" id="rankingList"></div>
+   </section>
+
+   <section class="screen" id="screen-new">
+    <div class="eyebrow">RECIÉN LLEGADOS</div><h2>🌱 Servidores nuevos</h2>
+    <div class="grid" id="newGrid"></div>
+   </section>
+
+   <section class="screen" id="screen-publish">
+    <div class="eyebrow">COMUNIDAD</div><h2>＋ Publicar servidor</h2>
+    <p class="muted">Compartí tu servidor con otros jugadores.</p>
+    <div class="panel">
+     <form id="publishForm" class="form-grid">
+      <div><label>Nombre</label><input id="pubName" maxlength="50" required></div>
+      <div><label>Dirección IP</label><input id="pubIP" maxlength="253" required></div>
+      <div><label>Puerto</label><input id="pubPort" type="number" min="1" max="65535" placeholder="25565"></div>
+      <div><label>Edición</label><select id="pubEdition"><option>Java</option><option>Bedrock</option><option>Crossplay</option></select></div>
+      <div><label>Modalidad</label><select id="pubMode"><option>Survival</option><option>Skyblock</option><option>PvP</option><option>Network</option><option>SMP</option></select></div>
+      <div><label>Idioma</label><select id="pubLanguage"><option>Español</option><option>Inglés</option><option>Portugués</option><option>Otro</option></select></div>
+      <div class="full"><label>Descripción</label><textarea id="pubDescription" maxlength="500" placeholder="Contá qué ofrece tu servidor..."></textarea></div>
+      <div class="full"><button class="btn primary">Enviar publicación</button></div>
+     </form>
+     <div id="publishMessage" class="message"></div>
+    </div>
+   </section>
+
+   <section class="screen" id="screen-favorites">
+    <div class="eyebrow">TU COLECCIÓN</div><h2>💚 Favoritos</h2>
+    <div class="grid" id="favoriteGrid"></div>
+   </section>
+
+   <section class="screen" id="screen-profile">
+    <div class="eyebrow">TU ESPACIO</div><h2>👤 Mi perfil</h2>
+    <div class="panel" id="profileBox"></div>
+    <h3>📜 Historial de actividad</h3>
+    <div class="panel" id="activityList"></div>
+    <h3>🔔 Notificaciones</h3>
+    <div class="panel" id="notificationList"></div>
+   </section>
+
+   <section class="screen" id="screen-admin">
+    <div class="eyebrow">ZONA PRIVADA</div><h2>🛡️ ServerCraft Admin</h2>
+    <div class="stats" id="adminStats"></div>
+    <div class="toolbar">
+     <button class="btn small" onclick="adminTab('logs')">Logs</button>
+     <button class="btn small" onclick="adminTab('reports')">Reportes</button>
+     <button class="btn small" onclick="adminTab('users')">Usuarios</button>
+     <button class="btn small" onclick="adminTab('servers')">Servidores</button>
+    </div>
+    <div class="panel" id="adminContent"></div>
+   </section>
+  </main>
+ </div>
+
+ <nav class="mobile-nav" id="mobileNav"></nav>
+ <footer>SERVERCRAFT · Java · Bedrock · Crossplay<br>Proyecto independiente. No afiliado oficialmente con Mojang o Microsoft.</footer>
 </div>
 
-<!-- MODAL VALORACIONES -->
-<div class="modal" id="ratingModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('ratingModal')">×</button>
-    <h2 class="modal-title">⭐ Valorar servidor</h2>
-    <p class="modal-subtitle" id="ratingServerName"></p>
-
-    <form id="ratingForm">
-      <div class="form-group">
-        <label>Tu valoración</label>
-        <select id="ratingValue">
-          <option value="5">⭐⭐⭐⭐⭐ - Excelente</option>
-          <option value="4">⭐⭐⭐⭐ - Muy bueno</option>
-          <option value="3">⭐⭐⭐ - Bueno</option>
-          <option value="2">⭐⭐ - Regular</option>
-          <option value="1">⭐ - Malo</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" style="width:100%">Enviar valoración</button>
-    </form>
-  </div>
+<!-- MODAL DE SERVIDOR -->
+<div class="modal" id="serverModal">
+ <div class="modal-box">
+  <h2 id="serverModalTitle">Servidor</h2>
+  <div id="serverModalBody"></div>
+  <div class="modal-actions"><button class="btn" onclick="closeModal('serverModal')">Cerrar</button></div>
+ </div>
 </div>
 
 <script>
-// DATOS DE DEMOSTRACIÓN
-const defaultServers = [
-  {
-    id:1,
-    name:"CraftWorld",
-    ip:"play.craftworld.net",
-    port:"25565",
-    platform:"Java",
-    mode:"Survival",
-    description:"Una comunidad de supervivencia y aventuras.",
-    players:null,
-    ratings:[5,4,5]
-  },
-  {
-    id:2,
-    name:"SkyLand",
-    ip:"play.skyland.net",
-    port:"19132",
-    platform:"Bedrock",
-    mode:"SkyBlock",
-    description:"Construye tu propia isla y progresa.",
-    players:null,
-    ratings:[5,5,4]
-  },
-  {
-    id:3,
-    name:"BattleZone",
-    ip:"mc.battlezone.net",
-    port:"25565",
-    platform:"Java",
-    mode:"BedWars",
-    description:"Enfréntate a otros equipos en emocionantes partidas.",
-    players:null,
-    ratings:[4,5]
-  }
+const API="/api/";
+let authMode="register";
+let currentUser=null;
+let servers=[];
+let favorites=new Set();
+let selectedEdition="all";
+let statusCache={};
+
+const navItems=[
+ ["home","⌂","Inicio"],["explore","🧭","Explorar"],
+ ["ranking","🏆","Ranking"],["new","🌱","Nuevos"],
+ ["publish","＋","Publicar"],["favorites","♥","Favoritos"],
+ ["profile","👤","Perfil"]
 ];
 
-let servers = JSON.parse(localStorage.getItem("sc_servers") || "null") || defaultServers;
-let favorites = JSON.parse(localStorage.getItem("sc_favorites") || "[]");
-let currentFilter = "Todos";
-let ratingServerId = null;
-let authMode = "register";
-let currentUser = sessionStorage.getItem("sc_user") || null;
-
-function saveServers() {
-  localStorage.setItem("sc_servers",JSON.stringify(servers));
+async function api(path,options={}){
+ const response=await fetch(API+path,{
+  credentials:"same-origin",
+  ...options,
+  headers:{"Content-Type":"application/json",...(options.headers||{})}
+ });
+ let data={};
+ try{data=await response.json()}catch{}
+ if(!response.ok||data.ok===false)throw new Error(data.error||"Ocurrió un error.");
+ return data;
 }
-
-function saveFavorites() {
-  localStorage.setItem("sc_favorites",JSON.stringify(favorites));
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
 }
-
-function average(server) {
-  if (!server.ratings || !server.ratings.length) return 0;
-  return server.ratings.reduce((a,b)=>a+b,0)/server.ratings.length;
+function setAuthMode(mode){
+ authMode=mode;
+ const register=mode==="register";
+ document.getElementById("authTitle").textContent=register?"Crear cuenta":"Iniciar sesión";
+ document.getElementById("authDescription").textContent=register?"Registrate para entrar a ServerCraft.":"Ingresá a tu cuenta para continuar.";
+ document.getElementById("authSubmit").textContent=register?"Crear cuenta":"Iniciar sesión";
+ document.getElementById("authPassword").autocomplete=register?"new-password":"current-password";
+ document.getElementById("registerTab").classList.toggle("primary",register);
+ document.getElementById("loginTab").classList.toggle("primary",!register);
+ document.getElementById("authMessage").textContent="";
 }
-
-function renderServers() {
-  const grid = document.getElementById("serverGrid");
-  const search = document.getElementById("searchInput").value.toLowerCase();
-
-  const filtered = servers.filter(server => {
-    const matchesSearch =
-      server.name.toLowerCase().includes(search) ||
-      server.mode.toLowerCase().includes(search);
-
-    const matchesFilter =
-      currentFilter === "Todos" ||
-      server.platform === currentFilter ||
-      (currentFilter === "Crossplay" && server.platform === "Crossplay");
-
-    return matchesSearch && matchesFilter;
-  });
-
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="empty">No encontramos servidores con esa búsqueda.</div>';
-    return;
-  }
-
-  grid.innerHTML = filtered.map(server => serverCard(server)).join("");
-}
-
-function serverCard(server) {
-  const saved = favorites.includes(server.id);
-  const rating = average(server);
-  const ratingText = rating ? rating.toFixed(1)+" ★" : "Sin valoraciones";
-
-  return `
-  <article class="server-card">
-    <div class="server-banner">⛏️</div>
-    <div class="server-body">
-      <div class="server-title-row">
-        <div class="server-title">${escapeHTML(server.name)}</div>
-        <button class="heart ${saved?'saved':''}" onclick="toggleFavorite(${server.id})" aria-label="Favorito">
-          ${saved?'♥':'♡'}
-        </button>
-      </div>
-
-      <p class="server-description">${escapeHTML(server.description || "Servidor de Minecraft.")}</p>
-
-      <div class="server-tags">
-        <span class="tag">${escapeHTML(server.platform)}</span>
-        <span class="tag">${escapeHTML(server.mode)}</span>
-      </div>
-
-      <div class="server-info">
-        <span>📡 Estado por verificar</span>
-        <span>⭐ ${ratingText}</span>
-      </div>
-
-      <div class="server-actions">
-        <button class="btn btn-small" onclick="copyIP(${server.id})">Copiar IP</button>
-        <button class="btn btn-small" onclick="openRating(${server.id})">Valorar</button>
-      </div>
-    </div>
-  </article>`;
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[char]);
-}
-
-function setFilter(filter,button) {
-  currentFilter = filter;
-  document.querySelectorAll(".filter").forEach(el=>el.classList.remove("active"));
-  button.classList.add("active");
-  renderServers();
-}
-
-function categoryFilter(mode) {
-  document.getElementById("searchInput").value = mode;
-  currentFilter = "Todos";
-  document.querySelectorAll(".filter").forEach(el=>el.classList.remove("active"));
-  document.querySelector('[data-filter="Todos"]').classList.add("active");
-  renderServers();
-  document.getElementById("servidores").scrollIntoView({behavior:"smooth"});
-}
-
-function toggleFavorite(id) {
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(item=>item!==id);
-  } else {
-    favorites.push(id);
-  }
-
-  saveFavorites();
-  renderServers();
-  renderFavorites();
-}
-
-function renderFavorites() {
-  const grid = document.getElementById("favoriteGrid");
-  const list = servers.filter(server=>favorites.includes(server.id));
-
-  grid.innerHTML = list.length
-    ? list.map(server=>serverCard(server)).join("")
-    : '<div class="empty">Todavía no tienes favoritos. Guarda un servidor con el corazón ♥.</div>';
-}
-
-function copyIP(id) {
-  const server = servers.find(item=>item.id===id);
-  if (!server) return;
-
-  const address = server.ip + (server.port ? ":"+server.port : "");
-
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(address)
-      .then(()=>alert("¡Dirección copiada! "+address))
-      .catch(()=>prompt("Copia la dirección:",address));
-  } else {
-    prompt("Copia la dirección:",address);
-  }
-}
-
-function renderRanking() {
-  const list = [...servers]
-    .filter(server=>server.ratings && server.ratings.length)
-    .sort((a,b)=>average(b)-average(a));
-
-  document.getElementById("rankingList").innerHTML = list.length
-    ? list.map((server,index)=>`
-      <div class="rank-item">
-        <div class="rank-number">#${index+1}</div>
-        <div style="flex:1">
-          <strong>${escapeHTML(server.name)}</strong>
-          <small>${escapeHTML(server.mode)} · ${escapeHTML(server.platform)}</small>
-        </div>
-        <strong style="color:var(--green)">⭐ ${average(server).toFixed(1)}</strong>
-      </div>`).join("")
-    : '<div class="empty">Todavía no hay valoraciones.</div>';
-}
-
-// CUENTAS: INTERFAZ DE DEMOSTRACIÓN
-function openAuth(mode) {
-  authMode = mode;
-  updateAuth();
-  document.getElementById("authModal").classList.add("show");
-}
-
-function updateAuth() {
-  const register = authMode === "register";
-
-  document.getElementById("authTitle").textContent =
-    register ? "CREAR CUENTA" : "INICIAR SESIÓN";
-
-  document.getElementById("authSubtitle").textContent =
-    register ? "Únete a la comunidad SERVERCRAFT." : "¡Qué bueno tenerte de vuelta!";
-
-  document.getElementById("confirmGroup").style.display =
-    register ? "block" : "none";
-
-  document.getElementById("authSubmit").textContent =
-    register ? "Crear cuenta" : "Iniciar sesión";
-
-  document.getElementById("authSwitch").textContent =
-    register ? "¿Ya tienes cuenta? Iniciar sesión" : "¿No tienes cuenta? Crear cuenta";
-
-  document.getElementById("authMessage").textContent = "";
-  document.getElementById("authForm").reset();
-}
-
-function switchAuth() {
-  authMode = authMode === "register" ? "login" : "register";
-  updateAuth();
-}
-
-document.getElementById("authForm").addEventListener("submit",function(event) {
-  event.preventDefault();
-
-  const username = document.getElementById("authUsername").value.trim();
-  const password = document.getElementById("authPassword").value;
-  const confirm = document.getElementById("authConfirm").value;
-  const message = document.getElementById("authMessage");
-
-  if (username.length < 3 || password.length < 8) {
-    message.className = "form-message error";
-    message.textContent = "Comprueba tu usuario y contraseña.";
-    return;
-  }
-
-  if (authMode === "register" && password !== confirm) {
-    message.className = "form-message error";
-    message.textContent = "Las contraseñas no coinciden.";
-    return;
-  }
-
-  message.className = "form-message error";
-  message.textContent =
-    "La interfaz está preparada, pero falta conectar el sistema seguro de cuentas. No se ha guardado tu contraseña.";
+document.getElementById("authForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const button=document.getElementById("authSubmit");
+ const message=document.getElementById("authMessage");
+ button.disabled=true;message.textContent="Conectando...";
+ try{
+  const data=await api(authMode,{method:"POST",body:JSON.stringify({
+   username:document.getElementById("authUsername").value.trim(),
+   password:document.getElementById("authPassword").value
+  })});
+  currentUser=data.user;
+  document.getElementById("authPassword").value="";
+  await enterApp();
+ }catch(error){message.textContent=error.message}
+ finally{button.disabled=false}
 });
 
-// PUBLICAR SERVIDORES: DEMOSTRACIÓN LOCAL
-function openPublish() {
-  document.getElementById("publishMessage").textContent = "";
-  document.getElementById("publishModal").classList.add("show");
+async function checkSession(){
+ try{
+  const data=await api("me");
+  if(data.user){currentUser=data.user;await enterApp()}
+ }catch{}
 }
-
-document.getElementById("publishForm").addEventListener("submit",function(event) {
-  event.preventDefault();
-
-  const ip = document.getElementById("serverIP").value.trim();
-
-  if (!/^[a-zA-Z0-9.-]+$/.test(ip)) {
-    document.getElementById("publishMessage").textContent =
-      "Introduce una dirección IP o dominio válido.";
-    return;
-  }
-
-  const newServer = {
-    id:Date.now(),
-    name:document.getElementById("serverName").value.trim(),
-    ip:ip,
-    port:document.getElementById("serverPort").value.trim(),
-    platform:document.getElementById("serverPlatform").value,
-    mode:document.getElementById("serverMode").value,
-    description:document.getElementById("serverDescription").value.trim(),
-    players:null,
-    ratings:[]
-  };
-
-  servers.push(newServer);
-  saveServers();
-  renderAll();
-
-  closeModal("publishModal");
-  this.reset();
-  alert("Servidor añadido a esta demostración local. La publicación pública requiere el backend.");
-  document.getElementById("servidores").scrollIntoView({behavior:"smooth"});
-});
-
-// VALORACIONES: DEMOSTRACIÓN LOCAL
-function openRating(id) {
-  ratingServerId = id;
-  const server = servers.find(item=>item.id===id);
-  document.getElementById("ratingServerName").textContent =
-    server ? server.name : "";
-  document.getElementById("ratingModal").classList.add("show");
+async function enterApp(){
+ document.getElementById("authScreen").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ document.getElementById("topUsername").textContent=currentUser.username;
+ buildNavigation();
+ await loadServers();
+ go("home");
 }
-
-document.getElementById("ratingForm").addEventListener("submit",function(event) {
-  event.preventDefault();
-
-  const server = servers.find(item=>item.id===ratingServerId);
-  if (!server) return;
-
-  server.ratings.push(Number(document.getElementById("ratingValue").value));
-  saveServers();
-  renderAll();
-  closeModal("ratingModal");
-  alert("Valoración guardada en esta demostración local.");
-});
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove("show");
+async function logout(){
+ try{await api("logout",{method:"POST",body:"{}"})}catch{}
+ currentUser=null;servers=[];favorites.clear();
+ document.getElementById("app").classList.add("hidden");
+ document.getElementById("authScreen").classList.remove("hidden");
+ setAuthMode("login");
 }
-
-function renderAccount() {
-  const area = document.getElementById("accountArea");
-
-  if (currentUser) {
-    area.innerHTML = `
-      <button class="btn btn-small" onclick="logout()">
-        ${escapeHTML(currentUser)} · Salir
-      </button>`;
-  } else {
-    area.innerHTML = `
-      <button class="btn btn-primary btn-small" onclick="openAuth('register')">
-        Crear cuenta
-      </button>`;
-  }
+function buildNavigation(){
+ const make=(mobile=false)=>navItems.map(([id,icon,label])=>
+ `<button class="navbtn" data-screen="${id}" onclick="go('${id}')"><span>${icon}</span>${mobile?"":label}</button>`
+ ).join("")+
+ (currentUser.role==="owner"?`<button class="navbtn" data-screen="admin" onclick="go('admin')"><span>🛡️</span>${mobile?"Admin":"Administración"}</button>`:"");
+ document.getElementById("sideNav").innerHTML=make();
+ document.getElementById("mobileNav").innerHTML=make(true);
 }
-
-function logout() {
-  sessionStorage.removeItem("sc_user");
-  currentUser = null;
-  renderAccount();
+function go(screen){
+ if(screen==="admin"&&currentUser.role!=="owner")return;
+ document.querySelectorAll(".screen").forEach(el=>el.classList.remove("active"));
+ const target=document.getElementById("screen-"+screen);
+ if(!target)return;
+ target.classList.add("active");
+ document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.screen===screen));
+ if(screen==="favorites")loadFavorites();
+ if(screen==="profile")loadProfile();
+ if(screen==="ranking")renderRanking();
+ if(screen==="new")renderNew();
+ if(screen==="admin")loadAdmin();
+ window.scrollTo({top:0,behavior:"smooth"});
 }
-
-function renderAll() {
+function setEdition(edition){
+ selectedEdition=edition;
+ document.querySelectorAll(".edition-btn").forEach(b=>b.classList.toggle("active",b.dataset.edition===edition));
+ renderServers();
+}
+async function loadServers(){
+ try{
+  const data=await api("servers");
+  servers=data.servers||[];
+  document.getElementById("totalCount").textContent=servers.length;
+  renderServers();renderRanking();renderNew();
+ }catch(error){
+  document.getElementById("serverGrid").innerHTML=`<div class="empty">${escapeHTML(error.message)}</div>`;
+ }
+}
+function statusFor(server){
+ if(server.disabled)return '<span class="status offline">● DESACTIVADO</span>';
+ const status=statusCache[server.id];
+ if(!status)return '<span class="status unknown">● SIN COMPROBAR</span>';
+ if(status.error)return '<span class="status unknown">● NO DISPONIBLE</span>';
+ return status.online?`<span class="status online">● ONLINE · ${status.players} jugadores</span>`:'<span class="status offline">● OFFLINE</span>';
+}
+function serverCard(s){
+ const fav=favorites.has(s.id);
+ return `<article class="card">
+  <div class="banner">${s.banner?`<span>${escapeHTML(s.banner)}</span>`:"🌌"}</div>
+  <div class="card-body">
+   <div class="card-top"><h3>${escapeHTML(s.name)}</h3><span class="tag">${escapeHTML(s.edition)}</span></div>
+   <p>${escapeHTML(s.description||"Servidor de Minecraft.")}</p>
+   <div class="meta"><span>🎮 ${escapeHTML(s.mode)}</span><span>📦 ${s.port}</span></div>
+   <div>${statusFor(s)}</div>
+   <div class="meta"><span>${escapeHTML(s.ip)}:${s.port}</span></div>
+   <div class="meta"><span>⭐ ${s.rating??"Sin valorar"}</span><span>♥ ${s.favorites_count??0}</span></div>
+   <div class="card-actions">
+    <button class="btn primary small" onclick="copyIP('${escapeHTML(s.ip)}',${Number(s.port)})">Copiar IP</button>
+    <button class="btn small" onclick="toggleFavorite('${s.id}')">${fav?"♥":"♡"}</button>
+    <button class="btn small" onclick="openServer('${s.id}')">Ver</button>
+   </div>
+  </div>
+ </article>`;
+}
+function renderServers(){
+ const q=(document.getElementById("search")?.value||"").toLowerCase();
+ const mode=document.getElementById("mode")?.value||"all";
+ const sort=document.getElementById("sort")?.value||"new";
+ let filtered=servers.filter(s=>
+  (selectedEdition==="all"||s.edition===selectedEdition||
+   (selectedEdition==="Java"&&s.edition==="Crossplay")||
+   (selectedEdition==="Bedrock"&&s.edition==="Crossplay"))&&
+  (mode==="all"||s.mode===mode)&&
+  (`${s.name} ${s.ip}`.toLowerCase().includes(q))
+ );
+ if(sort==="rating")filtered.sort((a,b)=>(b.rating||0)-(a.rating||0));
+ if(sort==="favorites")filtered.sort((a,b)=>(b.favorites_count||0)-(a.favorites_count||0));
+ if(sort==="name")filtered.sort((a,b)=>a.name.localeCompare(b.name));
+ document.getElementById("serverGrid").innerHTML=filtered.length?filtered.map(serverCard).join(""):'<div class="empty">No encontramos servidores con esos filtros.</div>';
+}
+async function toggleFavorite(serverId){
+ try{
+  const data=await api("favorite",{method:"POST",body:JSON.stringify({serverId})});
+  if(data.favorite)favorites.add(serverId);else favorites.delete(serverId);
+  document.getElementById("favoriteCount").textContent=favorites.size;
   renderServers();
-  renderFavorites();
-  renderRanking();
-  renderAccount();
+  if(document.getElementById("screen-favorites").classList.contains("active"))loadFavorites();
+ }catch(error){alert(error.message)}
 }
-
-// CERRAR MODALES AL TOCAR EL FONDO
-document.querySelectorAll(".modal").forEach(modal=>{
-  modal.addEventListener("click",event=>{
-    if(event.target===modal) modal.classList.remove("show");
-  });
+async function loadFavorites(){
+ try{
+  const data=await api("favorites");
+  favorites=new Set(data.servers.map(s=>s.id));
+  document.getElementById("favoriteCount").textContent=favorites.size;
+  document.getElementById("favoriteGrid").innerHTML=data.servers.length?data.servers.map(serverCard).join(""):'<div class="empty">Todavía no guardaste favoritos.</div>';
+ }catch(error){document.getElementById("favoriteGrid").textContent=error.message}
+}
+async function copyIP(ip,port){
+ try{
+  await navigator.clipboard.writeText(`${ip}:${port}`);
+  alert("¡IP copiada!");
+ }catch{alert(`IP: ${ip}:${port}`)}
+}
+function openModal(id){document.getElementById(id).classList.add("show")}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+function findServer(id){return servers.find(s=>s.id===id)}
+function openServer(id){
+ const s=findServer(id);if(!s)return;
+ document.getElementById("serverModalTitle").textContent=s.name;
+ document.getElementById("serverModalBody").innerHTML=`
+  <p class="muted">${escapeHTML(s.description||"Servidor Minecraft")}</p>
+  <p><b>Edición:</b> ${escapeHTML(s.edition)}</p>
+  <p><b>Modalidad:</b> ${escapeHTML(s.mode)}</p>
+  <p><b>Dirección:</b> ${escapeHTML(s.ip)}:${s.port}</p>
+  <p>${statusFor(s)}</p>
+  <div class="modal-actions">
+   <button class="btn primary" onclick="copyIP('${escapeHTML(s.ip)}',${Number(s.port)})">Copiar IP</button>
+   <button class="btn" onclick="reviewServer('${s.id}')">Valorar</button>
+   <button class="btn" onclick="reportServer('${s.id}')">Reportar</button>
+  </div>
+  <h3>Comentarios</h3>
+  <div id="commentsBox" class="muted">Cargando...</div>
+  <textarea id="commentText" maxlength="500" placeholder="Escribí un comentario..."></textarea>
+  <button class="btn primary" onclick="sendComment('${s.id}')">Enviar comentario</button>`;
+ openModal("serverModal");loadComments(id);
+}
+async function reportServer(serverId){
+ const reason=prompt("¿Por qué querés reportar este servidor?");
+ if(!reason)return;
+ try{await api("report",{method:"POST",body:JSON.stringify({serverId,reason})});alert("Reporte enviado.");}
+ catch(error){alert(error.message)}
+}
+async function reviewServer(serverId){
+ const rating=Number(prompt("Valoración de 1 a 5:"));
+ if(!Number.isInteger(rating)||rating<1||rating>5)return alert("Valoración inválida.");
+ const comment=prompt("Comentario opcional:")||"";
+ try{
+  await api("review",{method:"POST",body:JSON.stringify({serverId,rating,comment})});
+  alert("¡Gracias por valorar!");
+  await loadServers();
+ }catch(error){alert(error.message)}
+}
+async function loadComments(serverId){
+ try{
+  const data=await api("comments?serverId="+encodeURIComponent(serverId));
+  document.getElementById("commentsBox").innerHTML=data.comments.length?
+   data.comments.map(c=>`<div class="list-row"><div><strong>${escapeHTML(c.username)}</strong><small>${escapeHTML(c.content)}</small></div></div>`).join(""):
+   "Todavía no hay comentarios.";
+ }catch(error){document.getElementById("commentsBox").textContent=error.message}
+}
+async function sendComment(serverId){
+ const input=document.getElementById("commentText");
+ try{
+  await api("comment",{method:"POST",body:JSON.stringify({serverId,content:input.value})});
+  input.value="";loadComments(serverId);
+ }catch(error){alert(error.message)}
+}
+document.getElementById("publishForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const message=document.getElementById("publishMessage");
+ message.textContent="Publicando...";
+ const edition=document.getElementById("pubEdition").value;
+ try{
+  await api("servers",{method:"POST",body:JSON.stringify({
+   name:document.getElementById("pubName").value,
+   ip:document.getElementById("pubIP").value,
+   port:Number(document.getElementById("pubPort").value)||(edition==="Java"?25565:19132),
+   edition,mode:document.getElementById("pubMode").value,
+   description:document.getElementById("pubDescription").value,
+   language:document.getElementById("pubLanguage").value
+  })});
+  message.textContent="¡Servidor enviado correctamente!";
+  e.target.reset();await loadServers();
+ }catch(error){message.textContent=error.message}
 });
-
-renderAll();
+async function renderRanking(){
+ try{
+  await loadServers();
+  const sorted=[...servers].filter(s=>s.rating).sort((a,b)=>b.rating-a.rating);
+  document.getElementById("rankingList").innerHTML=sorted.length?sorted.slice(0,20).map((s,i)=>
+   `<div class="rank-row"><span class="rank-num">#${i+1}</span><strong>${escapeHTML(s.name)}<small>${escapeHTML(s.edition)} · ${escapeHTML(s.mode)}</small></strong><span>⭐ ${s.rating}</span></div>`
+  ).join(""):'<div class="empty">Todavía no hay valoraciones.</div>';
+ }catch{}
+}
+function renderNew(){
+ const recent=[...servers].reverse().slice(0,9);
+ document.getElementById("newGrid").innerHTML=recent.length?recent.map(serverCard).join(""):'<div class="empty">Todavía no hay servidores nuevos.</div>';
+}
+async function loadProfile(){
+ try{
+  const data=await api("profile");
+  document.getElementById("profileBox").innerHTML=`
+   <h2>${escapeHTML(data.user.username)}</h2>
+   <span class="badge">${escapeHTML(data.user.role)}</span>
+   <p class="muted">Nivel ${data.user.level} · ${data.user.xp} XP</p>`;
+  document.getElementById("activityList").innerHTML=data.activity.length?
+   data.activity.map(a=>`<div class="list-row"><div><strong>${escapeHTML(a.action)}</strong><small>${escapeHTML(a.details)} · ${escapeHTML(a.created_at)}</small></div></div>`).join(""):"Todavía no hay actividad.";
+  const notifications=await api("notifications");
+  document.getElementById("notificationList").innerHTML=notifications.notifications.length?
+   notifications.notifications.map(n=>`<div class="list-row"><div><strong>${escapeHTML(n.title)}</strong><small>${escapeHTML(n.message)}</small></div></div>`).join(""):"No tenés notificaciones.";
+ }catch(error){alert(error.message)}
+}
+async function refreshStatuses(){
+ const button=document.querySelector('[onclick="refreshStatuses()"]');
+ if(button)button.disabled=true;
+ let online=0;
+ for(const s of servers){
+  if(s.disabled)continue;
+  const type=s.edition==="Java"?"java":"bedrock";
+  try{
+   const response=await fetch(`https://api.mcstatus.io/v2/status/${type}/${encodeURIComponent(s.ip+":"+s.port)}`);
+   if(!response.ok)throw Error();
+   const data=await response.json();
+   statusCache[s.id]={online:!!data.online,players:data.players?.online||0};
+   if(data.online)online++;
+  }catch{statusCache[s.id]={error:true}}
+  renderServers();
+ }
+ document.getElementById("onlineCount").textContent=online;
+ if(button)button.disabled=false;
+}
+async function loadAdmin(){
+ try{
+  const data=await api("admin/stats");
+  document.getElementById("adminStats").innerHTML=`
+   <div class="stat"><strong>${data.users}</strong><span>Usuarios</span></div>
+   <div class="stat"><strong>${data.servers}</strong><span>Servidores</span></div>
+   <div class="stat"><strong>${data.pendingReports}</strong><span>Reportes pendientes</span></div>
+   <div class="stat"><strong>${data.reviews}</strong><span>Valoraciones</span></div>`;
+  adminTab("logs");
+ }catch(error){document.getElementById("adminContent").textContent=error.message}
+}
+async function adminTab(tab){
+ const box=document.getElementById("adminContent");
+ box.textContent="Cargando...";
+ try{
+  const data=await api("admin/"+tab);
+  if(tab==="logs")box.innerHTML=(data.logs||[]).map(x=>`<div class="log-item">${escapeHTML(x.action)} · ${escapeHTML(x.username||"Sistema")} · ${escapeHTML(x.details)} · ${escapeHTML(x.created_at)}</div>`).join("")||"Sin registros.";
+  if(tab==="users")box.innerHTML=(data.users||[]).map(x=>`<div class="list-row"><strong>${escapeHTML(x.username)}</strong><span class="badge">${escapeHTML(x.role)}</span></div>`).join("")||"Sin usuarios.";
+  if(tab==="servers")box.innerHTML=(data.servers||[]).map(x=>`<div class="list-row"><div><strong>${escapeHTML(x.name)}</strong><small>${escapeHTML(x.ip)}:${x.port}</small></div><button class="btn small" onclick="toggleServerStatus('${x.id}',${x.disabled?0:1})">${x.disabled?"Activar":"Desactivar"}</button></div>`).join("")||"Sin servidores.";
+  if(tab==="reports")box.innerHTML=(data.reports||[]).map(x=>`<div class="list-row"><div><strong>${escapeHTML(x.server_name)}</strong><small>${escapeHTML(x.username)}: ${escapeHTML(x.reason)}</small><small>Estado: ${escapeHTML(x.status)}</small></div><button class="btn small" onclick="setReportStatus('${x.id}','reviewed')">Revisado</button><button class="btn small" onclick="setReportStatus('${x.id}','rejected')">Rechazar</button></div>`).join("")||"Sin reportes.";
+ }catch(error){box.textContent=error.message}
+}
+async function toggleServerStatus(serverId,disabled){
+ try{await api("admin/server-status",{method:"POST",body:JSON.stringify({serverId,disabled:!!disabled})});await adminTab("servers");await loadServers()}
+ catch(error){alert(error.message)}
+}
+async function setReportStatus(reportId,status){
+ try{await api("admin/report-status",{method:"POST",body:JSON.stringify({reportId,status})});await adminTab("reports")}
+ catch(error){alert(error.message)}
+}
+function createParticles(){
+ const holder=document.getElementById("particles");
+ for(let i=0;i<25;i++){
+  const p=document.createElement("i");p.className="particle";
+  p.style.left=Math.random()*100+"%";
+  p.style.animationDuration=(9+Math.random()*15)+"s";
+  p.style.animationDelay=(-Math.random()*20)+"s";
+  holder.appendChild(p);
+ }
+}
+createParticles();
+checkSession();
 </script>
-
 </body>
 </html>
