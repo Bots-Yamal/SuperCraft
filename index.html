@@ -1,0 +1,1241 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101510">
+<title>SERVERCRAFT — Descubre tu próximo mundo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#101510;
+  --panel:#19221b;
+  --panel2:#202c22;
+  --green:#75d64b;
+  --green2:#a2ed73;
+  --text:#f2f5ef;
+  --muted:#9aa89a;
+  --border:#344638;
+  --danger:#ff6868;
+}
+
+* {box-sizing:border-box;margin:0;padding:0}
+
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  min-height:100vh;
+}
+
+button,input,select,textarea {font:inherit}
+button {cursor:pointer}
+a {color:inherit;text-decoration:none}
+
+.pixel {
+  font-family:"Press Start 2P",monospace;
+  line-height:1.8;
+  letter-spacing:-1px;
+}
+
+header {
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(16,21,16,.94);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav {
+  max-width:1250px;
+  margin:auto;
+  padding:16px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.logo {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-size:12px;
+  color:var(--green);
+}
+
+.logo-icon {
+  width:38px;
+  height:38px;
+  background:var(--green);
+  color:#142010;
+  display:grid;
+  place-items:center;
+  font-size:19px;
+  border-radius:7px;
+}
+
+.nav-links {
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+
+.nav-links a {
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.nav-links a:hover {color:var(--green)}
+
+.btn {
+  padding:11px 17px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+  font-weight:700;
+  transition:.2s;
+}
+
+.btn:hover {transform:translateY(-2px);border-color:var(--green)}
+
+.btn-primary {
+  background:var(--green);
+  border-color:var(--green);
+  color:#142010;
+}
+
+.btn-primary:hover {background:var(--green2)}
+
+.btn-small {padding:9px 13px;font-size:12px}
+
+.container {
+  max-width:1150px;
+  padding:0 22px;
+  margin:auto;
+}
+
+.hero {
+  padding:85px 20px 70px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  background:
+  radial-gradient(ellipse at 50% 30%,rgba(88,171,58,.15),transparent 65%);
+}
+
+.hero-tag {
+  display:inline-block;
+  border:1px solid var(--border);
+  padding:9px 13px;
+  border-radius:30px;
+  color:var(--green);
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:25px;
+}
+
+.hero h1 {
+  font-size:clamp(23px,5vw,43px);
+  color:var(--green);
+  margin-bottom:18px;
+  text-shadow:0 4px 25px #75d64b30;
+}
+
+.hero h2 {
+  font-size:clamp(10px,2vw,14px);
+  line-height:2.2;
+  margin-bottom:14px;
+}
+
+.hero p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+  max-width:550px;
+  margin:0 auto 28px;
+}
+
+.platforms {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:28px;
+}
+
+.platform {
+  border:1px solid var(--border);
+  background:var(--panel);
+  border-radius:7px;
+  padding:9px 14px;
+  color:var(--green2);
+  font-size:11px;
+  font-weight:800;
+}
+
+.hero-actions {
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.section {padding:45px 0}
+
+.section-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:22px;
+}
+
+.section-heading h2 {
+  font-size:17px;
+}
+
+.section-heading p {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:7px;
+}
+
+.search-box {
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.search-box input {
+  flex:1;
+  min-width:0;
+}
+
+input,select,textarea {
+  width:100%;
+  background:#111a13;
+  border:1px solid var(--border);
+  color:white;
+  padding:13px 14px;
+  border-radius:8px;
+  outline:none;
+  font-size:13px;
+}
+
+input:focus,select:focus,textarea:focus {
+  border-color:var(--green);
+}
+
+input::placeholder,textarea::placeholder {color:#718073}
+
+.filters {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:23px;
+}
+
+.filter {
+  background:var(--panel);
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:9px 13px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.filter.active,.filter:hover {
+  background:#263b27;
+  color:var(--green);
+  border-color:var(--green);
+}
+
+.server-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:17px;
+}
+
+.server-card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  transition:.2s;
+}
+
+.server-card:hover {
+  transform:translateY(-4px);
+  border-color:#6aab53;
+}
+
+.server-banner {
+  height:110px;
+  background:
+  linear-gradient(135deg,#243d29,#16251a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  position:relative;
+}
+
+.server-banner::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.2));
+}
+
+.server-body {padding:16px}
+
+.server-title-row {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.server-title {font-size:15px;font-weight:800}
+
+.heart {
+  border:0;
+  background:none;
+  color:#8c9b8e;
+  font-size:22px;
+}
+
+.heart.saved {color:#ff7272}
+
+.server-description {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  min-height:40px;
+}
+
+.server-tags {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:14px 0;
+}
+
+.tag {
+  background:#25352a;
+  color:#a7e88b;
+  border-radius:5px;
+  padding:5px 8px;
+  font-size:10px;
+  font-weight:700;
+}
+
+.server-info {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:14px;
+}
+
+.online {color:var(--green)}
+
+.server-actions {
+  display:flex;
+  gap:8px;
+}
+
+.server-actions button {flex:1}
+
+.empty {
+  padding:35px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--border);
+  border-radius:10px;
+  grid-column:1/-1;
+  font-size:13px;
+}
+
+.category-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.category {
+  padding:25px 12px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:11px;
+  text-align:center;
+  transition:.2s;
+  cursor:pointer;
+}
+
+.category:hover {
+  border-color:var(--green);
+  transform:translateY(-4px);
+}
+
+.category-icon {font-size:31px;margin-bottom:12px}
+.category h3 {font-size:12px}
+.category p {font-size:10px;color:var(--muted);margin-top:8px}
+
+.feature-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.feature {
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:21px;
+  border-radius:10px;
+}
+
+.feature-icon {font-size:24px;margin-bottom:12px}
+.feature h3 {font-size:13px;margin-bottom:8px}
+.feature p {font-size:12px;color:var(--muted);line-height:1.7}
+
+.ranking-list {display:grid;gap:10px}
+
+.rank-item {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:14px;
+}
+
+.rank-number {
+  color:var(--green);
+  font-size:17px;
+  font-weight:900;
+  width:28px;
+}
+
+.rank-item strong {font-size:13px}
+.rank-item small {display:block;color:var(--muted);margin-top:5px}
+
+footer {
+  margin-top:55px;
+  padding:35px 20px;
+  border-top:1px solid var(--border);
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:2;
+}
+
+footer strong {color:var(--green)}
+
+.modal {
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#000b;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal.show {display:flex}
+
+.modal-box {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:25px;
+  width:100%;
+  max-width:430px;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+}
+
+.modal-close {
+  position:absolute;
+  right:16px;
+  top:13px;
+  background:none;
+  color:var(--muted);
+  border:0;
+  font-size:23px;
+}
+
+.modal-title {
+  font-size:16px;
+  color:var(--green);
+  margin-bottom:8px;
+}
+
+.modal-subtitle {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:20px;
+}
+
+.form-group {margin-bottom:14px}
+.form-group label {
+  display:block;
+  font-size:11px;
+  margin-bottom:7px;
+  color:#c5d1c6;
+  font-weight:700;
+}
+
+.form-message {
+  font-size:12px;
+  margin:12px 0;
+  line-height:1.6;
+}
+
+.form-message.error {color:var(--danger)}
+.form-message.success {color:var(--green)}
+
+.switch-auth {
+  color:var(--green);
+  background:none;
+  border:0;
+  font-size:12px;
+  margin-top:17px;
+  width:100%;
+}
+
+.notice {
+  background:#253529;
+  border:1px solid #405b43;
+  color:#b7d9b1;
+  padding:12px;
+  border-radius:7px;
+  font-size:11px;
+  line-height:1.7;
+  margin-bottom:15px;
+}
+
+.mobile-menu {display:none}
+
+@media(max-width:800px) {
+  .nav-links {display:none}
+  .server-grid {grid-template-columns:repeat(2,1fr)}
+  .category-grid {grid-template-columns:repeat(2,1fr)}
+  .feature-grid {grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:520px) {
+  .nav {padding:12px 15px}
+  .logo {font-size:9px}
+  .logo-icon {width:32px;height:32px}
+  .nav .btn {padding:9px 10px;font-size:11px}
+  .container {padding:0 15px}
+  .hero {padding:65px 15px 50px}
+  .server-grid {grid-template-columns:1fr}
+  .feature-grid {grid-template-columns:1fr}
+  .section {padding:32px 0}
+  .search-box {flex-direction:column}
+  .section-heading h2 {font-size:15px}
+  .pixel {font-size:inherit}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#" class="logo">
+      <span class="logo-icon">⛏</span>
+      <span class="pixel">SERVERCRAFT</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#servidores">Servidores</a>
+      <a href="#modalidades">Modalidades</a>
+      <a href="#ranking">Ranking</a>
+    </div>
+
+    <div id="accountArea">
+      <button class="btn btn-primary btn-small" onclick="openAuth('register')">Crear cuenta</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" id="inicio">
+  <div class="hero-tag">🌍 TU PRÓXIMA AVENTURA COMIENZA AQUÍ</div>
+
+  <h1 class="pixel">SERVERCRAFT</h1>
+
+  <h2 class="pixel">DESCUBRE TU PRÓXIMO MUNDO</h2>
+
+  <p>
+    Encuentra servidores increíbles, conoce nuevas comunidades
+    y descubre tu próxima aventura en Minecraft.
+  </p>
+
+  <div class="platforms">
+    <span class="platform">JAVA</span>
+    <span class="platform">BEDROCK</span>
+    <span class="platform">CROSSPLAY</span>
+  </div>
+
+  <div class="hero-actions">
+    <a href="#servidores" class="btn btn-primary">Explorar servidores</a>
+    <button class="btn" onclick="openAuth('register')">Publicar servidor</button>
+  </div>
+</section>
+
+<div class="container">
+
+<section class="section" id="servidores">
+  <div class="section-heading">
+    <div>
+      <h2>🌐 Explorar servidores</h2>
+      <p>Encuentra tu próxima comunidad de Minecraft.</p>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <input id="searchInput" placeholder="Buscar servidores por nombre..." oninput="renderServers()">
+    <button class="btn btn-primary" onclick="renderServers()">Buscar</button>
+  </div>
+
+  <div class="filters">
+    <button class="filter active" data-filter="Todos" onclick="setFilter('Todos',this)">Todos</button>
+    <button class="filter" data-filter="Java" onclick="setFilter('Java',this)">Java</button>
+    <button class="filter" data-filter="Bedrock" onclick="setFilter('Bedrock',this)">Bedrock</button>
+    <button class="filter" data-filter="Crossplay" onclick="setFilter('Crossplay',this)">Crossplay</button>
+  </div>
+
+  <div class="server-grid" id="serverGrid"></div>
+</section>
+
+<section class="section" id="modalidades">
+  <div class="section-heading">
+    <div>
+      <h2>🧭 Descubre tu modalidad</h2>
+      <p>¿Qué tipo de aventura estás buscando?</p>
+    </div>
+  </div>
+
+  <div class="category-grid">
+    <div class="category" onclick="categoryFilter('Survival')">
+      <div class="category-icon">🌲</div>
+      <h3>Survival</h3>
+      <p>Sobrevive y construye.</p>
+    </div>
+
+    <div class="category" onclick="categoryFilter('SkyBlock')">
+      <div class="category-icon">☁️</div>
+      <h3>SkyBlock</h3>
+      <p>Comienza desde una isla.</p>
+    </div>
+
+    <div class="category" onclick="categoryFilter('BedWars')">
+      <div class="category-icon">🛏️</div>
+      <h3>BedWars</h3>
+      <p>Compite con otros equipos.</p>
+    </div>
+
+    <div class="category" onclick="categoryFilter('Lifesteal')">
+      <div class="category-icon">❤️</div>
+      <h3>Lifesteal</h3>
+      <p>Una aventura PvP.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="favoritos">
+  <div class="section-heading">
+    <div>
+      <h2>❤️ Mis favoritos</h2>
+      <p>Los servidores que has guardado.</p>
+    </div>
+  </div>
+  <div class="server-grid" id="favoriteGrid">
+    <div class="empty">Todavía no tienes favoritos.</div>
+  </div>
+</section>
+
+<section class="section" id="ranking">
+  <div class="section-heading">
+    <div>
+      <h2>🏆 Ranking de servidores</h2>
+      <p>Los servidores mejor valorados.</p>
+    </div>
+  </div>
+  <div class="ranking-list" id="rankingList">
+    <div class="empty">Todavía no hay valoraciones.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <div>
+      <h2>✨ ¿Qué encontrarás aquí?</h2>
+      <p>Todo lo necesario para descubrir nuevos mundos.</p>
+    </div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature">
+      <div class="feature-icon">🔎</div>
+      <h3>Buscador</h3>
+      <p>Encuentra servidores por nombre y modalidad.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">⚔️</div>
+      <h3>Java y Bedrock</h3>
+      <p>Descubre servidores para distintas plataformas.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">⭐</div>
+      <h3>Valoraciones</h3>
+      <p>Consulta las opiniones de otros jugadores.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">📖</div>
+      <h3>Guías</h3>
+      <p>Aprende a entrar a servidores Java y Bedrock.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">📡</div>
+      <h3>Estado en tiempo real</h3>
+      <p>Consulta la disponibilidad y los jugadores conectados cuando esté conectado el sistema de verificación.</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">🌟</div>
+      <h3>Destacados</h3>
+      <p>Descubre comunidades interesantes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="publicar">
+  <div class="feature" style="text-align:center;padding:35px">
+    <div class="feature-icon">🚀</div>
+    <h2 style="font-size:19px;margin-bottom:12px">¿Tienes un servidor?</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">
+      Comparte tu comunidad con otros jugadores de Minecraft.
+    </p>
+    <button class="btn btn-primary" onclick="openPublish()">Publicar mi servidor</button>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <strong class="pixel">SERVERCRAFT</strong>
+  <p>DESCUBRE TU PRÓXIMO MUNDO</p>
+  <p>JAVA · BEDROCK · CROSSPLAY</p>
+  <p style="margin-top:15px">© 2026 SERVERCRAFT. Todos los derechos reservados.</p>
+</footer>
+
+<!-- MODAL DE CUENTAS -->
+<div class="modal" id="authModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('authModal')">×</button>
+
+    <h2 class="modal-title pixel" id="authTitle">CREAR CUENTA</h2>
+    <p class="modal-subtitle" id="authSubtitle">Únete a la comunidad SERVERCRAFT.</p>
+
+    <div class="notice">
+      Esta versión es una demostración visual. El registro e inicio de sesión reales necesitan una base de datos y un servidor seguro.
+    </div>
+
+    <form id="authForm">
+      <div class="form-group">
+        <label>Nombre de usuario</label>
+        <input id="authUsername" required minlength="3" maxlength="20" placeholder="Tu nombre de usuario">
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input id="authPassword" type="password" required minlength="8" placeholder="Tu contraseña">
+      </div>
+
+      <div class="form-group" id="confirmGroup">
+        <label>Confirmar contraseña</label>
+        <input id="authConfirm" type="password" minlength="8" placeholder="Repite tu contraseña">
+      </div>
+
+      <div class="form-message" id="authMessage"></div>
+
+      <button class="btn btn-primary" style="width:100%" id="authSubmit">Crear cuenta</button>
+    </form>
+
+    <button class="switch-auth" id="authSwitch" onclick="switchAuth()">
+      ¿Ya tienes cuenta? Iniciar sesión
+    </button>
+  </div>
+</div>
+
+<!-- MODAL PUBLICAR SERVIDOR -->
+<div class="modal" id="publishModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('publishModal')">×</button>
+
+    <h2 class="modal-title pixel">PUBLICAR SERVIDOR</h2>
+    <p class="modal-subtitle">Comparte tu mundo con la comunidad.</p>
+
+    <form id="publishForm">
+      <div class="form-group">
+        <label>Nombre del servidor</label>
+        <input id="serverName" required maxlength="35" placeholder="Ej. MiServidor">
+      </div>
+
+      <div class="form-group">
+        <label>Dirección IP</label>
+        <input id="serverIP" required placeholder="play.ejemplo.com">
+      </div>
+
+      <div class="form-group">
+        <label>Puerto (opcional)</label>
+        <input id="serverPort" type="number" placeholder="25565">
+      </div>
+
+      <div class="form-group">
+        <label>Plataforma</label>
+        <select id="serverPlatform">
+          <option>Java</option>
+          <option>Bedrock</option>
+          <option>Crossplay</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Modalidad</label>
+        <select id="serverMode">
+          <option>Survival</option>
+          <option>SkyBlock</option>
+          <option>BedWars</option>
+          <option>Lifesteal</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea id="serverDescription" rows="3" maxlength="180" placeholder="Describe tu servidor..."></textarea>
+      </div>
+
+      <div class="form-message" id="publishMessage"></div>
+      <button class="btn btn-primary" style="width:100%">Enviar servidor</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL VALORACIONES -->
+<div class="modal" id="ratingModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('ratingModal')">×</button>
+    <h2 class="modal-title">⭐ Valorar servidor</h2>
+    <p class="modal-subtitle" id="ratingServerName"></p>
+
+    <form id="ratingForm">
+      <div class="form-group">
+        <label>Tu valoración</label>
+        <select id="ratingValue">
+          <option value="5">⭐⭐⭐⭐⭐ - Excelente</option>
+          <option value="4">⭐⭐⭐⭐ - Muy bueno</option>
+          <option value="3">⭐⭐⭐ - Bueno</option>
+          <option value="2">⭐⭐ - Regular</option>
+          <option value="1">⭐ - Malo</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="width:100%">Enviar valoración</button>
+    </form>
+  </div>
+</div>
+
+<script>
+// DATOS DE DEMOSTRACIÓN
+const defaultServers = [
+  {
+    id:1,
+    name:"CraftWorld",
+    ip:"play.craftworld.net",
+    port:"25565",
+    platform:"Java",
+    mode:"Survival",
+    description:"Una comunidad de supervivencia y aventuras.",
+    players:null,
+    ratings:[5,4,5]
+  },
+  {
+    id:2,
+    name:"SkyLand",
+    ip:"play.skyland.net",
+    port:"19132",
+    platform:"Bedrock",
+    mode:"SkyBlock",
+    description:"Construye tu propia isla y progresa.",
+    players:null,
+    ratings:[5,5,4]
+  },
+  {
+    id:3,
+    name:"BattleZone",
+    ip:"mc.battlezone.net",
+    port:"25565",
+    platform:"Java",
+    mode:"BedWars",
+    description:"Enfréntate a otros equipos en emocionantes partidas.",
+    players:null,
+    ratings:[4,5]
+  }
+];
+
+let servers = JSON.parse(localStorage.getItem("sc_servers") || "null") || defaultServers;
+let favorites = JSON.parse(localStorage.getItem("sc_favorites") || "[]");
+let currentFilter = "Todos";
+let ratingServerId = null;
+let authMode = "register";
+let currentUser = sessionStorage.getItem("sc_user") || null;
+
+function saveServers() {
+  localStorage.setItem("sc_servers",JSON.stringify(servers));
+}
+
+function saveFavorites() {
+  localStorage.setItem("sc_favorites",JSON.stringify(favorites));
+}
+
+function average(server) {
+  if (!server.ratings || !server.ratings.length) return 0;
+  return server.ratings.reduce((a,b)=>a+b,0)/server.ratings.length;
+}
+
+function renderServers() {
+  const grid = document.getElementById("serverGrid");
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  const filtered = servers.filter(server => {
+    const matchesSearch =
+      server.name.toLowerCase().includes(search) ||
+      server.mode.toLowerCase().includes(search);
+
+    const matchesFilter =
+      currentFilter === "Todos" ||
+      server.platform === currentFilter ||
+      (currentFilter === "Crossplay" && server.platform === "Crossplay");
+
+    return matchesSearch && matchesFilter;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty">No encontramos servidores con esa búsqueda.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(server => serverCard(server)).join("");
+}
+
+function serverCard(server) {
+  const saved = favorites.includes(server.id);
+  const rating = average(server);
+  const ratingText = rating ? rating.toFixed(1)+" ★" : "Sin valoraciones";
+
+  return `
+  <article class="server-card">
+    <div class="server-banner">⛏️</div>
+    <div class="server-body">
+      <div class="server-title-row">
+        <div class="server-title">${escapeHTML(server.name)}</div>
+        <button class="heart ${saved?'saved':''}" onclick="toggleFavorite(${server.id})" aria-label="Favorito">
+          ${saved?'♥':'♡'}
+        </button>
+      </div>
+
+      <p class="server-description">${escapeHTML(server.description || "Servidor de Minecraft.")}</p>
+
+      <div class="server-tags">
+        <span class="tag">${escapeHTML(server.platform)}</span>
+        <span class="tag">${escapeHTML(server.mode)}</span>
+      </div>
+
+      <div class="server-info">
+        <span>📡 Estado por verificar</span>
+        <span>⭐ ${ratingText}</span>
+      </div>
+
+      <div class="server-actions">
+        <button class="btn btn-small" onclick="copyIP(${server.id})">Copiar IP</button>
+        <button class="btn btn-small" onclick="openRating(${server.id})">Valorar</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+function setFilter(filter,button) {
+  currentFilter = filter;
+  document.querySelectorAll(".filter").forEach(el=>el.classList.remove("active"));
+  button.classList.add("active");
+  renderServers();
+}
+
+function categoryFilter(mode) {
+  document.getElementById("searchInput").value = mode;
+  currentFilter = "Todos";
+  document.querySelectorAll(".filter").forEach(el=>el.classList.remove("active"));
+  document.querySelector('[data-filter="Todos"]').classList.add("active");
+  renderServers();
+  document.getElementById("servidores").scrollIntoView({behavior:"smooth"});
+}
+
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(item=>item!==id);
+  } else {
+    favorites.push(id);
+  }
+
+  saveFavorites();
+  renderServers();
+  renderFavorites();
+}
+
+function renderFavorites() {
+  const grid = document.getElementById("favoriteGrid");
+  const list = servers.filter(server=>favorites.includes(server.id));
+
+  grid.innerHTML = list.length
+    ? list.map(server=>serverCard(server)).join("")
+    : '<div class="empty">Todavía no tienes favoritos. Guarda un servidor con el corazón ♥.</div>';
+}
+
+function copyIP(id) {
+  const server = servers.find(item=>item.id===id);
+  if (!server) return;
+
+  const address = server.ip + (server.port ? ":"+server.port : "");
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(address)
+      .then(()=>alert("¡Dirección copiada! "+address))
+      .catch(()=>prompt("Copia la dirección:",address));
+  } else {
+    prompt("Copia la dirección:",address);
+  }
+}
+
+function renderRanking() {
+  const list = [...servers]
+    .filter(server=>server.ratings && server.ratings.length)
+    .sort((a,b)=>average(b)-average(a));
+
+  document.getElementById("rankingList").innerHTML = list.length
+    ? list.map((server,index)=>`
+      <div class="rank-item">
+        <div class="rank-number">#${index+1}</div>
+        <div style="flex:1">
+          <strong>${escapeHTML(server.name)}</strong>
+          <small>${escapeHTML(server.mode)} · ${escapeHTML(server.platform)}</small>
+        </div>
+        <strong style="color:var(--green)">⭐ ${average(server).toFixed(1)}</strong>
+      </div>`).join("")
+    : '<div class="empty">Todavía no hay valoraciones.</div>';
+}
+
+// CUENTAS: INTERFAZ DE DEMOSTRACIÓN
+function openAuth(mode) {
+  authMode = mode;
+  updateAuth();
+  document.getElementById("authModal").classList.add("show");
+}
+
+function updateAuth() {
+  const register = authMode === "register";
+
+  document.getElementById("authTitle").textContent =
+    register ? "CREAR CUENTA" : "INICIAR SESIÓN";
+
+  document.getElementById("authSubtitle").textContent =
+    register ? "Únete a la comunidad SERVERCRAFT." : "¡Qué bueno tenerte de vuelta!";
+
+  document.getElementById("confirmGroup").style.display =
+    register ? "block" : "none";
+
+  document.getElementById("authSubmit").textContent =
+    register ? "Crear cuenta" : "Iniciar sesión";
+
+  document.getElementById("authSwitch").textContent =
+    register ? "¿Ya tienes cuenta? Iniciar sesión" : "¿No tienes cuenta? Crear cuenta";
+
+  document.getElementById("authMessage").textContent = "";
+  document.getElementById("authForm").reset();
+}
+
+function switchAuth() {
+  authMode = authMode === "register" ? "login" : "register";
+  updateAuth();
+}
+
+document.getElementById("authForm").addEventListener("submit",function(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("authUsername").value.trim();
+  const password = document.getElementById("authPassword").value;
+  const confirm = document.getElementById("authConfirm").value;
+  const message = document.getElementById("authMessage");
+
+  if (username.length < 3 || password.length < 8) {
+    message.className = "form-message error";
+    message.textContent = "Comprueba tu usuario y contraseña.";
+    return;
+  }
+
+  if (authMode === "register" && password !== confirm) {
+    message.className = "form-message error";
+    message.textContent = "Las contraseñas no coinciden.";
+    return;
+  }
+
+  message.className = "form-message error";
+  message.textContent =
+    "La interfaz está preparada, pero falta conectar el sistema seguro de cuentas. No se ha guardado tu contraseña.";
+});
+
+// PUBLICAR SERVIDORES: DEMOSTRACIÓN LOCAL
+function openPublish() {
+  document.getElementById("publishMessage").textContent = "";
+  document.getElementById("publishModal").classList.add("show");
+}
+
+document.getElementById("publishForm").addEventListener("submit",function(event) {
+  event.preventDefault();
+
+  const ip = document.getElementById("serverIP").value.trim();
+
+  if (!/^[a-zA-Z0-9.-]+$/.test(ip)) {
+    document.getElementById("publishMessage").textContent =
+      "Introduce una dirección IP o dominio válido.";
+    return;
+  }
+
+  const newServer = {
+    id:Date.now(),
+    name:document.getElementById("serverName").value.trim(),
+    ip:ip,
+    port:document.getElementById("serverPort").value.trim(),
+    platform:document.getElementById("serverPlatform").value,
+    mode:document.getElementById("serverMode").value,
+    description:document.getElementById("serverDescription").value.trim(),
+    players:null,
+    ratings:[]
+  };
+
+  servers.push(newServer);
+  saveServers();
+  renderAll();
+
+  closeModal("publishModal");
+  this.reset();
+  alert("Servidor añadido a esta demostración local. La publicación pública requiere el backend.");
+  document.getElementById("servidores").scrollIntoView({behavior:"smooth"});
+});
+
+// VALORACIONES: DEMOSTRACIÓN LOCAL
+function openRating(id) {
+  ratingServerId = id;
+  const server = servers.find(item=>item.id===id);
+  document.getElementById("ratingServerName").textContent =
+    server ? server.name : "";
+  document.getElementById("ratingModal").classList.add("show");
+}
+
+document.getElementById("ratingForm").addEventListener("submit",function(event) {
+  event.preventDefault();
+
+  const server = servers.find(item=>item.id===ratingServerId);
+  if (!server) return;
+
+  server.ratings.push(Number(document.getElementById("ratingValue").value));
+  saveServers();
+  renderAll();
+  closeModal("ratingModal");
+  alert("Valoración guardada en esta demostración local.");
+});
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
+}
+
+function renderAccount() {
+  const area = document.getElementById("accountArea");
+
+  if (currentUser) {
+    area.innerHTML = `
+      <button class="btn btn-small" onclick="logout()">
+        ${escapeHTML(currentUser)} · Salir
+      </button>`;
+  } else {
+    area.innerHTML = `
+      <button class="btn btn-primary btn-small" onclick="openAuth('register')">
+        Crear cuenta
+      </button>`;
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem("sc_user");
+  currentUser = null;
+  renderAccount();
+}
+
+function renderAll() {
+  renderServers();
+  renderFavorites();
+  renderRanking();
+  renderAccount();
+}
+
+// CERRAR MODALES AL TOCAR EL FONDO
+document.querySelectorAll(".modal").forEach(modal=>{
+  modal.addEventListener("click",event=>{
+    if(event.target===modal) modal.classList.remove("show");
+  });
+});
+
+renderAll();
+</script>
+
+</body>
+</html>
